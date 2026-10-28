@@ -1,0 +1,68 @@
+services:
+  proyecto-sql-server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: proyecto-sql-server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Gx7!SqlSrv_2025#Db
+      - MSSQL_PID=Developer
+      - MSSQL_COLLATION=Modern_Spanish_CI_AS
+      - MSSQL_TCP_PORT=1433
+      - TZ=America/Guatemala
+    ports:
+      - "1433:1433"
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
+    healthcheck:
+      test: [ "CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Gx7!SqlSrv_2025#Db' -C -Q 'SELECT 1' || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - proyecto-basedatos-network
+  proyecto-db-init:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: proyecto-db-init
+    depends_on:
+      proyecto-sql-server:
+        condition: service_healthy
+    networks:
+      - proyecto-basedatos-network
+    command: >
+      /bin/bash -c " /opt/mssql-tools/bin/sqlcmd -S proyecto-sql-server -U sa -P 'Gx7!SqlSrv_2025#Db' -C -Q 'IF DB_ID(''proyecto_umg'') IS NULL CREATE DATABASE proyecto_umg COLLATE Modern_Spanish_CI_AS;' "
+
+  proyecto-umg-backend:
+    container_name: proyecto-umg-backend
+    build:
+      context: ./proyecto-base-datos
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    environment:
+      DB_HOST: proyecto-sql-server
+      DB_USER: sa
+      DB_PASS: Gx7!SqlSrv_2025#Db
+      DB_PORT: 1433
+      DB_DATABASE: proyecto_umg
+      TZ: "America/Guatemala"
+    networks:
+      - proyecto-basedatos-network
+    depends_on:
+      proyecto-sql-server:
+        condition: service_healthy
+      proyecto-db-init:
+        condition: service_completed_successfully
+
+volumes:
+  mssql_data:
+
+networks:
+  proyecto-basedatos-network:
+    driver: bridge
