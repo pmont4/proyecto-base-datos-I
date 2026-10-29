@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class CarreraRepositorio implements Repositorio<Carrera> {
@@ -50,6 +51,32 @@ public class CarreraRepositorio implements Repositorio<Carrera> {
         }
 
         return carreras;
+    }
+
+    @Override
+    public Optional<Carrera> obtener(int id) {
+        Optional<Carrera> optionalCarrera = Optional.empty();
+
+        try (Connection connection = this.agroalDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "SELECT IdCarrera, Codigo, Nombre, Facultad FROM Carrera WHERE IdCarrera=?"
+             )) {
+            preparedStatement.setInt(1, id);
+             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Carrera carrera = new Carrera();
+                    carrera.setIdCarrera(resultSet.getInt("IdCarrera"));
+                    carrera.setCodigoCarrera(resultSet.getString("Codigo"));
+                    carrera.setNombreCarrera(resultSet.getString("Nombre"));
+                    carrera.setFacultad(Facultad.valueOf(resultSet.getString("Facultad").toUpperCase()));
+                    optionalCarrera = Optional.of(carrera);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+        }
+
+        return optionalCarrera;
     }
 
     @Override

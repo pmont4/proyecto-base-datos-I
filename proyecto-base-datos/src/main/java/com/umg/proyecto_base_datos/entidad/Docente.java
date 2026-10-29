@@ -6,7 +6,7 @@ public class Docente {
     private String nombreDocente;
     private String apellidoDocente;
     private String especialidadDocente;
-    private int telefonoDocente;
+    private String telefonoDocente;
     private String correoDocente;
 
     public Docente() {
@@ -44,11 +44,11 @@ public class Docente {
         this.especialidadDocente = especialidadDocente;
     }
 
-    public int getTelefonoDocente() {
+    public String getTelefonoDocente() {
         return telefonoDocente;
     }
 
-    public void setTelefonoDocente(int telefonoDocente) {
+    public void setTelefonoDocente(String telefonoDocente) {
         this.telefonoDocente = telefonoDocente;
     }
 

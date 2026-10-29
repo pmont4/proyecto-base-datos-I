@@ -1,13 +1,19 @@
 package com.umg.proyecto_base_datos.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Estudiante {
 
     private int idEstudiante;
     private String carnet;
     private String nombre;
     private String apellido;
+
+    @JsonIgnore
+    private int carrearId;
     private Carrera carrera;
-    private int telefono;
+
+    private String telefono;
     private String correo;
 
     public Estudiante() {
@@ -45,6 +51,14 @@ public class Estudiante {
         this.apellido = apellido;
     }
 
+    public int getCarrearId() {
+        return carrearId;
+    }
+
+    public void setCarrearId(int carrearId) {
+        this.carrearId = carrearId;
+    }
+
     public Carrera getCarrera() {
         return carrera;
     }
@@ -53,11 +67,11 @@ public class Estudiante {
         this.carrera = carrera;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 

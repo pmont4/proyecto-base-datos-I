@@ -1,16 +1,27 @@
 package com.umg.proyecto_base_datos.entidad.seccion;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.umg.proyecto_base_datos.entidad.Curso;
 import com.umg.proyecto_base_datos.entidad.Docente;
+
+import java.util.List;
 
 public class Seccion {
 
     private int idSeccion;
+
+    @JsonIgnore
+    private int cursoId;
     private Curso curso;
+
+    @JsonIgnore
+    private int docenteId;
     private Docente docente;
+
     private String cicloAcademico;
     private char seccionCodigo;
     private int cupoMaximo;
+
     private SeccionHorario seccionHorario;
 
     public Seccion() {
@@ -24,12 +35,28 @@ public class Seccion {
         this.idSeccion = idSeccion;
     }
 
+    public int getCursoId() {
+        return cursoId;
+    }
+
+    public void setCursoId(int cursoId) {
+        this.cursoId = cursoId;
+    }
+
     public Curso getCurso() {
         return curso;
     }
 
     public void setCurso(Curso curso) {
         this.curso = curso;
+    }
+
+    public int getDocenteId() {
+        return docenteId;
+    }
+
+    public void setDocenteId(int docenteId) {
+        this.docenteId = docenteId;
     }
 
     public Docente getDocente() {

@@ -1,14 +1,14 @@
 package com.umg.proyecto_base_datos.entidad.seccion;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class SeccionHorario {
 
     private int idSeccionHorario;
     private int idSeccion;
     private int diaSemana;
-    private LocalDateTime horaInicio;
-    private LocalDateTime horaFin;
+    private LocalTime horaInicio;
+    private LocalTime horaFin;
     private String aula;
 
     public SeccionHorario() {
@@ -38,19 +38,19 @@ public class SeccionHorario {
         this.diaSemana = diaSemana;
     }
 
-    public LocalDateTime getHoraInicio() {
+    public LocalTime getHoraInicio() {
         return horaInicio;
     }
 
-    public void setHoraInicio(LocalDateTime horaInicio) {
+    public void setHoraInicio(LocalTime horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public LocalDateTime getHoraFin() {
+    public LocalTime getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(LocalDateTime horaFin) {
+    public void setHoraFin(LocalTime horaFin) {
         this.horaFin = horaFin;
     }
 
