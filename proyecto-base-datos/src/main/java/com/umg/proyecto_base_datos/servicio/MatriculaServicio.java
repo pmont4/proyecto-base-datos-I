@@ -1,5 +1,7 @@
 package com.umg.proyecto_base_datos.servicio;
 
+import com.umg.proyecto_base_datos.entidad.Estado;
+import com.umg.proyecto_base_datos.entidad.Estudiante;
 import com.umg.proyecto_base_datos.entidad.Matricula;
 import com.umg.proyecto_base_datos.entidad.Pago;
 import com.umg.proyecto_base_datos.entidad.seccion.Seccion;
@@ -18,12 +20,14 @@ public class MatriculaServicio implements Servicio<Matricula> {
     private final MatriculaRepositorio matriculaRepositorio;
 
     private final SeccionServicio seccionServicio;
+    private final EstudianteServicio estudianteServicio;
     private final PagoServicio pagoServicio;
 
     @Inject
-    public MatriculaServicio(MatriculaRepositorio matriculaRepositorio, SeccionServicio seccionServicio, PagoServicio pagoServicio) {
+    public MatriculaServicio(MatriculaRepositorio matriculaRepositorio, SeccionServicio seccionServicio, EstudianteServicio estudianteServicio, PagoServicio pagoServicio) {
         this.matriculaRepositorio = matriculaRepositorio;
         this.seccionServicio = seccionServicio;
+        this.estudianteServicio = estudianteServicio;
         this.pagoServicio = pagoServicio;
     }
 
@@ -36,6 +40,9 @@ public class MatriculaServicio implements Servicio<Matricula> {
         for (Matricula matricula : matriculas) {
             Optional<Seccion> optionalSeccion = this.seccionServicio.obtener(matricula.getSeccionId());
             optionalSeccion.ifPresent(matricula::setSeccion);
+
+            Optional<Estudiante> optionalEstudiante = this.estudianteServicio.obtener(matricula.getEstudianteId());
+            optionalEstudiante.ifPresent(matricula::setEstudiante);
 
             Optional<Pago> optionalPago = this.pagoServicio.obtener(matricula.getIdMatricula());
             optionalPago.ifPresent(matricula::setPago);
@@ -53,6 +60,9 @@ public class MatriculaServicio implements Servicio<Matricula> {
         Matricula matricula = optionalMatricula.get();
         Optional<Seccion> optionalSeccion = this.seccionServicio.obtener(matricula.getSeccionId());
         optionalSeccion.ifPresent(matricula::setSeccion);
+
+        Optional<Estudiante> optionalEstudiante = this.estudianteServicio.obtener(matricula.getEstudianteId());
+        optionalEstudiante.ifPresent(matricula::setEstudiante);
 
         Optional<Pago> optionalPago = this.pagoServicio.obtener(matricula.getIdMatricula());
         optionalPago.ifPresent(matricula::setPago);
@@ -87,8 +97,8 @@ public class MatriculaServicio implements Servicio<Matricula> {
     }
 
     @Transactional(rollbackOn = SQLException.class)
-    public boolean actualizarEstadoMatricula(int id) {
-        return this.matriculaRepositorio.actualizarEstadoMatricula(id);
+    boolean actualizarEstadoMatricula(int id, Estado estado) {
+        return this.matriculaRepositorio.actualizarEstadoMatricula(id, estado);
     }
 
 }

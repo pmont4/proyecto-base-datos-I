@@ -61,7 +61,8 @@ public class MatriculaRepositorio implements Repositorio<Matricula> {
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT IdMatricula, IdEstudiante, IdSeccion, FechaInscripcion, Estado FROM Matricula WHERE IdMatricula = ?"
              )) {
-             try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Matricula matricula = new Matricula();
                     matricula.setIdMatricula(resultSet.getInt("IdMatricula"));
@@ -154,12 +155,12 @@ public class MatriculaRepositorio implements Repositorio<Matricula> {
         return false;
     }
 
-    public boolean actualizarEstadoMatricula(int id) {
+    public boolean actualizarEstadoMatricula(int id, Estado estado) {
         try (Connection connection = this.agroalDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE Matricula SET Estado = ? WHERE IdMatricula = ?"
             )) {
-            preparedStatement.setString(1, Estado.ACTIVA.toString());
+            preparedStatement.setString(1, estado.toString());
             preparedStatement.setInt(2, id);
             int rows = preparedStatement.executeUpdate();
             return rows > 0;

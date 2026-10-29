@@ -1,5 +1,6 @@
 package com.umg.proyecto_base_datos.servicio;
 
+import com.umg.proyecto_base_datos.entidad.Estado;
 import com.umg.proyecto_base_datos.entidad.Pago;
 import com.umg.proyecto_base_datos.repositorio.PagoRepositorio;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -43,7 +44,7 @@ public class PagoServicio implements Servicio<Pago> {
         Pago pago = optionalPago.get();
         int idMatricula = pago.getIdMatricula();
 
-        if (this.matriculaServicio.actualizarEstadoMatricula(idMatricula)) {
+        if (this.matriculaServicio.actualizarEstadoMatricula(idMatricula, Estado.ACTIVA)) {
             return pago;
         }
 
@@ -59,7 +60,10 @@ public class PagoServicio implements Servicio<Pago> {
     @Transactional(rollbackOn = SQLException.class)
     @Override
     public boolean eliminar(int id) {
-        return this.pagoRepositorio.eliminar(id);
+        if (this.pagoRepositorio.eliminar(id)) {
+            return this.matriculaServicio.actualizarEstadoMatricula(id, Estado.CONGELADA);
+        }
+        return false;
     }
 
     @Override

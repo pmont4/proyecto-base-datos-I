@@ -59,6 +59,7 @@ public class SeccionRepositorio implements Repositorio<Seccion> {
              PreparedStatement preparedStatement = connection.prepareStatement(
                      "SELECT IdSeccion, IdCurso, IdDocente, CicloAcademico, SeccionCodigo, CupoMaximo FROM Seccion WHERE IdSeccion = ?"
              )) {
+            preparedStatement.setInt(1, id);
              try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Seccion seccion = new Seccion();
