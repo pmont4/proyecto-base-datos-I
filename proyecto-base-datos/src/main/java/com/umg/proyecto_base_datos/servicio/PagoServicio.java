@@ -15,9 +15,12 @@ public class PagoServicio implements Servicio<Pago> {
 
     private final PagoRepositorio pagoRepositorio;
 
+    private final MatriculaServicio matriculaServicio;
+
     @Inject
-    public PagoServicio(PagoRepositorio pagoRepositorio) {
+    public PagoServicio(PagoRepositorio pagoRepositorio, MatriculaServicio matriculaServicio) {
         this.pagoRepositorio = pagoRepositorio;
+        this.matriculaServicio = matriculaServicio;
     }
 
     @Override
@@ -33,7 +36,18 @@ public class PagoServicio implements Servicio<Pago> {
     @Transactional(rollbackOn = SQLException.class)
     @Override
     public Pago crear(Pago tipo) {
-        return this.pagoRepositorio.crear(tipo);
+        Optional<Pago> optionalPago = Optional.ofNullable(this.pagoRepositorio.crear(tipo));
+
+        if (optionalPago.isEmpty()) return null;
+
+        Pago pago = optionalPago.get();
+        int idMatricula = pago.getIdMatricula();
+
+        if (this.matriculaServicio.actualizarEstadoMatricula(idMatricula)) {
+            return pago;
+        }
+
+        return null;
     }
 
     @Transactional(rollbackOn = SQLException.class)
