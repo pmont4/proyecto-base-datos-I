@@ -19,6 +19,21 @@ const normalizar = (texto) =>
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
 
+// Formatea el teléfono a 0000-0000 (coloca '-' tras 4 dígitos y limita a 8 dígitos / 9 caracteres)
+const formatearTelefono = (valor, valorAnterior = '') => {
+    const digitos = (valor || '').replace(/\D/g, '').slice(0, 8);
+    if (digitos.length > 4) {
+        return `${digitos.slice(0, 4)}-${digitos.slice(4)}`;
+    }
+    if (digitos.length === 4 && valor.length > valorAnterior.length) {
+        return `${digitos}-`;
+    }
+    return digitos;
+};
+
+// Valida que el teléfono tenga exactamente los 8 dígitos con formato 0000-0000
+const esTelefonoValido = (telefono) => /^\d{4}-\d{4}$/.test((telefono || '').trim());
+
 export const AdministrarDocentes = () => {
 
     const { data: docentes = [], isLoading, isError, error } = useDocenteQuery();
@@ -64,12 +79,13 @@ export const AdministrarDocentes = () => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: name === 'telefonoDocente' ? formatearTelefono(value, prev.telefonoDocente) : value
         }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!esTelefonoValido(formData.telefonoDocente)) return;
 
         const payload = {
             nombreDocente: formData.nombreDocente.trim(),
@@ -94,7 +110,7 @@ export const AdministrarDocentes = () => {
             nombreDocente: docente.nombreDocente || '',
             apellidoDocente: docente.apellidoDocente || '',
             especialidadDocente: docente.especialidadDocente || '',
-            telefonoDocente: docente.telefonoDocente || '',
+            telefonoDocente: formatearTelefono(docente.telefonoDocente || ''),
             correoDocente: docente.correoDocente || ''
         });
     };
@@ -109,13 +125,13 @@ export const AdministrarDocentes = () => {
         const { name, value } = e.target;
         setEditFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: name === 'telefonoDocente' ? formatearTelefono(value, prev.telefonoDocente) : value
         }));
     };
 
     const handleEditSubmit = (e) => {
         e.preventDefault();
-        if (!docenteAEditar) return;
+        if (!docenteAEditar || !esTelefonoValido(editFormData.telefonoDocente)) return;
 
         const payload = {
             idDocente: docenteAEditar.idDocente,
@@ -312,6 +328,11 @@ export const AdministrarDocentes = () => {
                             id="telefonoDocente"
                             name="telefonoDocente"
                             type="text"
+                            inputMode="numeric"
+                            maxLength={9}
+                            minLength={9}
+                            pattern="\d{4}-\d{4}"
+                            title="El teléfono debe contener 8 dígitos (formato 0000-0000)"
                             className="form-control"
                             placeholder="Ej. 5555-1001"
                             value={formData.telefonoDocente}
@@ -346,7 +367,7 @@ export const AdministrarDocentes = () => {
                         <button
                             type="submit"
                             className="btn-primary-green"
-                            disabled={isCreating}
+                            disabled={isCreating || !esTelefonoValido(formData.telefonoDocente)}
                         >
                             {isCreating ? 'Guardando...' : 'Guardar Docente'}
                         </button>
@@ -412,6 +433,11 @@ export const AdministrarDocentes = () => {
                             id="edit-telefonoDocente"
                             name="telefonoDocente"
                             type="text"
+                            inputMode="numeric"
+                            maxLength={9}
+                            minLength={9}
+                            pattern="\d{4}-\d{4}"
+                            title="El teléfono debe contener 8 dígitos (formato 0000-0000)"
                             className="form-control"
                             placeholder="Ej. 5555-1001"
                             value={editFormData.telefonoDocente}
@@ -446,7 +472,7 @@ export const AdministrarDocentes = () => {
                         <button
                             type="submit"
                             className="btn-primary-green"
-                            disabled={isUpdating}
+                            disabled={isUpdating || !esTelefonoValido(editFormData.telefonoDocente)}
                         >
                             {isUpdating ? 'Guardando...' : 'Guardar Cambios'}
                         </button>
