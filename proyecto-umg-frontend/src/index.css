@@ -1,0 +1,45 @@
+/* ==========================================================
+   Estilos globales
+   ========================================================== */
+:root {
+    /* Colores */
+    --bg-page: #ffffff57;
+    --surface: #ffffff;
+    --sidebar-bg: #2f3136;
+    --sidebar-hover: #3a3d42;
+    --sidebar-active: #45484e;
+    --border: #e4e4e7;
+
+    /* Texto */
+    --text-primary: #222222;
+    --text-muted: #6b6b6b;
+    --text-on-dark: #e6e6e6;
+
+    /* Forma y sombra */
+    --radius-lg: 16px;
+    --radius-md: 8px;
+    --shadow-container: 0 10px 30px rgba(0, 0, 0, 0.18),
+        0 2px 8px rgba(0, 0, 0, 0.10);
+
+    font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    background: var(--bg-page);
+}

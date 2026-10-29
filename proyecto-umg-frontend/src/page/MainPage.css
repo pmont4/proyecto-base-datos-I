@@ -1,0 +1,37 @@
+/* Ventana principal: centra el contenedor en la hoja */
+.main-page {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* Contenedor principal con bordes redondeados y sombra */
+.main-container {
+    width: min(1500px, 100%);
+    height: min(880px, calc(100vh - 48px));
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-container);
+    overflow: hidden; /* respeta los bordes redondeados en la barra lateral */
+}
+
+.main-container__content {
+    flex: 1;
+    padding: 32px;
+    overflow-y: auto;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 720px) {
+    .main-page {
+        padding: 12px;
+    }
+
+    .main-container {
+        height: calc(100vh - 24px);
+    }
+}

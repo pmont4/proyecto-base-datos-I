@@ -37,7 +37,15 @@ services:
       - proyecto-basedatos-network
     command: >
       /bin/bash -c " /opt/mssql-tools/bin/sqlcmd -S proyecto-sql-server -U sa -P 'Gx7!SqlSrv_2025#Db' -C -Q 'IF DB_ID(''proyecto_umg'') IS NULL CREATE DATABASE proyecto_umg COLLATE Modern_Spanish_CI_AS;' "
-
+  nginx-gateway-proyecto:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.nginx
+    container_name: nginx-gateway-proyecto
+    ports:
+      - "80:80"
+    networks:
+      - proyecto-basedatos-network
   proyecto-umg-backend:
     container_name: proyecto-umg-backend
     build:
@@ -59,6 +67,20 @@ services:
         condition: service_healthy
       proyecto-db-init:
         condition: service_completed_successfully
+  proyecto-umg-fronted:
+    build:
+      context: ./proyecto-umg-frontend
+    restart: unless-stopped
+    container_name: proyecto-umg-frontend
+    expose:
+      - "80"
+    networks:
+      - proyecto-basedatos-network
+    depends_on:
+      proyecto-umg-backend:
+        condition: service_started
+      nginx-gateway-proyecto:
+        condition: service_started
 
 volumes:
   mssql_data:
