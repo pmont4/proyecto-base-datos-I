@@ -57,6 +57,9 @@ public class SeccionServicio implements Servicio<Seccion> {
         if (optionalSeccion.isEmpty()) return Optional.empty();
 
         Seccion seccion = optionalSeccion.get();
+        Optional<Curso> optionalCurso = this.cursoServicio.obtener(seccion.getCursoId());
+        optionalCurso.ifPresent(seccion::setCurso);
+
         Optional<Docente> optionalDocente = this.docenteServicio.obtener(seccion.getDocenteId());
         optionalDocente.ifPresent(seccion::setDocente);
 
@@ -76,7 +79,7 @@ public class SeccionServicio implements Servicio<Seccion> {
         tipo.setIdSeccion(seccion.getIdSeccion());
         tipo.getSeccionHorario().setIdSeccion(seccion.getIdSeccion());
 
-        Optional<SeccionHorario> optionalSeccionHorario = Optional.ofNullable(tipo.getSeccionHorario());
+        Optional<SeccionHorario> optionalSeccionHorario = Optional.ofNullable(this.seccionHorarioServicio.crear(tipo.getSeccionHorario()));
         if (optionalSeccionHorario.isEmpty()) return null;
         tipo.setSeccionHorario(optionalSeccionHorario.get());
         return tipo;
@@ -89,9 +92,12 @@ public class SeccionServicio implements Servicio<Seccion> {
 
         if (optionalSeccion.isEmpty()) return null;
 
-        if (!this.seccionHorarioServicio.existe(tipo.getIdSeccion())) return null;
-
-        Optional<SeccionHorario> optionalSeccionHorario = Optional.ofNullable(this.seccionHorarioServicio.actualizar(tipo.getSeccionHorario()));
+        Optional<SeccionHorario> optionalSeccionHorario;
+        if (!this.seccionHorarioServicio.existe(tipo.getIdSeccion())) {
+            optionalSeccionHorario = Optional.ofNullable(this.seccionHorarioServicio.crear(tipo.getSeccionHorario()));
+        } else {
+            optionalSeccionHorario = Optional.ofNullable(this.seccionHorarioServicio.actualizar(tipo.getSeccionHorario()));
+        }
 
         if (optionalSeccionHorario.isEmpty()) return null;
         tipo.setSeccionHorario(optionalSeccionHorario.get());

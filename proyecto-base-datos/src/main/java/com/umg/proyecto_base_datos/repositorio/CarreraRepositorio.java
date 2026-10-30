@@ -8,10 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +80,8 @@ public class CarreraRepositorio implements Repositorio<Carrera> {
     public Carrera crear(Carrera tipo) {
         try (Connection connection = this.agroalDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO Carrera (Codigo, Nombre, Facultad) VALUES (?,?,?)"
+                    "INSERT INTO Carrera (Codigo, Nombre, Facultad) VALUES (?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS
             )) {
                 preparedStatement.setString(1, tipo.getCodigoCarrera());
                 preparedStatement.setString(2, tipo.getNombreCarrera());

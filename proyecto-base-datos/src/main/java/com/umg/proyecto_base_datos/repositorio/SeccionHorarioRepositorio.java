@@ -92,7 +92,7 @@ public class SeccionHorarioRepositorio implements Repositorio<SeccionHorario> {
     public SeccionHorario actualizar(SeccionHorario tipo) {
         try (Connection connection = this.agroalDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE SeccionHorario SET DiaSemana = ?, HoraIncio = ?, HoraFin = ?, Aula = ? WHERE IdSeccion = ?"
+                    "UPDATE SeccionHorario SET DiaSemana = ?, HoraInicio = ?, HoraFin = ?, Aula = ? WHERE IdSeccion = ?"
             )) {
             preparedStatement.setInt(1, tipo.getDiaSemana());
             preparedStatement.setObject(2, tipo.getHoraInicio());

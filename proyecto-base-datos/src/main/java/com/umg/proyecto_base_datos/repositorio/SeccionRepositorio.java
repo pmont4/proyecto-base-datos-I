@@ -86,8 +86,8 @@ public class SeccionRepositorio implements Repositorio<Seccion> {
                     "INSERT INTO Seccion (IdCurso, IdDocente, CicloAcademico, SeccionCodigo, CupoMaximo) VALUES (?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
-            preparedStatement.setInt(1, tipo.getCursoId());
-            preparedStatement.setInt(2, tipo.getDocenteId());
+            preparedStatement.setInt(1, tipo.getCurso().getIdCurso());
+            preparedStatement.setInt(2, tipo.getDocente().getIdDocente());
             preparedStatement.setString(3, tipo.getCicloAcademico());
             preparedStatement.setString(4, String.valueOf(tipo.getSeccionCodigo()));
             preparedStatement.setInt(5, tipo.getCupoMaximo());
@@ -109,8 +109,8 @@ public class SeccionRepositorio implements Repositorio<Seccion> {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE Seccion SET IdCurso = ?, IdDocente = ?, CicloAcademico = ?, SeccionCodigo = ?, CupoMaximo = ? WHERE IdSeccion = ?"
             )) {
-            preparedStatement.setInt(1, tipo.getCursoId());
-            preparedStatement.setInt(2, tipo.getDocenteId());
+            preparedStatement.setInt(1, tipo.getCurso().getIdCurso());
+            preparedStatement.setInt(2, tipo.getDocente().getIdDocente());
             preparedStatement.setString(3, tipo.getCicloAcademico());
             preparedStatement.setString(4, String.valueOf(tipo.getSeccionCodigo()));
             preparedStatement.setInt(5, tipo.getCupoMaximo());

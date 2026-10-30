@@ -148,11 +148,47 @@
     color: #0c2a4f;
 }
 
+.btn-table-action--pay {
+    color: #2e7d32;
+    border-color: #bbf7d0;
+}
+
+.btn-table-action--pay:hover {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #1e5221;
+}
+
+.table__actions-group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
 /* ---------- Formularios ---------- */
 .form-crud {
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.form-section-title {
+    margin: 4px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 .form-group {
@@ -183,6 +219,57 @@
 .form-control:focus {
     outline: none;
     border-color: #2e7d32;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #f6f6f7;
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.input-email-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: #ffffff;
+    overflow: hidden;
+    transition: border-color 150ms ease;
+    box-sizing: border-box;
+}
+
+.input-email-group:focus-within {
+    border-color: #2e7d32;
+}
+
+.input-email-group__input {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 12px;
+    border: none;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: transparent;
+}
+
+.input-email-group__input:focus {
+    outline: none;
+}
+
+.input-email-group__domain {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    background-color: #f6f6f7;
+    border-left: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    user-select: none;
+    white-space: nowrap;
 }
 
 .form-actions {

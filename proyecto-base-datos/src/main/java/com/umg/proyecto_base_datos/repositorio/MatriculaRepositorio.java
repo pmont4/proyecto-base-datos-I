@@ -90,8 +90,8 @@ public class MatriculaRepositorio implements Repositorio<Matricula> {
                     "INSERT INTO Matricula (IdEstudiante, IdSeccion, FechaInscripcion, Estado) VALUES (?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
-            preparedStatement.setInt(1, tipo.getEstudianteId());
-            preparedStatement.setInt(2, tipo.getSeccionId());
+            preparedStatement.setInt(1, tipo.getEstudiante().getIdEstudiante());
+            preparedStatement.setInt(2, tipo.getSeccion().getIdSeccion());
             preparedStatement.setObject(3, tipo.getFechaInscripcion());
             preparedStatement.setString(4, Estado.CONGELADA.toString());
             int rows = preparedStatement.executeUpdate();
@@ -112,7 +112,7 @@ public class MatriculaRepositorio implements Repositorio<Matricula> {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE Matricula SET IdSeccion = ? WHERE IdMatricula = ?"
             )) {
-            preparedStatement.setInt(1, tipo.getSeccionId());
+            preparedStatement.setInt(1, tipo.getSeccion().getIdSeccion());
             preparedStatement.setInt(2, tipo.getIdMatricula());
             int rows = preparedStatement.executeUpdate();
             if (rows > 0) {

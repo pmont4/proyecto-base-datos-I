@@ -1,3 +1,4 @@
+import { AdministrarCarreras } from '../components/modules/AdministrarCarreras';
 import { AdministrarCursos } from '../components/modules/AdministrarCursos';
 import { AdministrarDocentes } from '../components/modules/AdministrarDocentes';
 import { AdministrarEstudiantes } from '../components/modules/AdministrarEstudiantes';
@@ -15,4 +16,5 @@ export const MENU_OPTIONS = [
     { id: 'estudiantes', label: 'Administrar Estudiantes', component: AdministrarEstudiantes },
     { id: 'matriculas', label: 'Administrar Matrículas', component: AdministrarMatriculas },
     { id: 'secciones', label: 'Administrar Secciones', component: AdministrarSecciones },
+    { id: 'carreras', label: 'Administrar Carreras', component: AdministrarCarreras },
 ];
